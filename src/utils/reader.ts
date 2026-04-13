@@ -2295,7 +2295,7 @@ export class Reader {
 					// Chromium's iframe embed works via declarativeNetRequest.
 					// Safari/Firefox can't modify headers, so we preserve
 					// the native video element instead.
-					if (!['chrome', 'brave', 'edge'].includes(browserType)) {
+					if (!["chrome", "brave", "edge"].includes(browserType)) {
 						youtubeVideoElement = videoElement;
 						videoElement.remove();
 					}
