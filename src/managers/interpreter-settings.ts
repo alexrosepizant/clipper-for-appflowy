@@ -34,10 +34,13 @@ export async function getPresetProviders(): Promise<
 
 export function updatePromptContextVisibility(): void {
 	const interpreterToggle = document.getElementById(
-		"interpreter-toggle",
+		"interpreter-toggle"
 	) as HTMLInputElement;
 	const promptContextContainer = document.getElementById(
-		"prompt-context-container",
+		"prompt-context-container"
+	);
+	const templateAdvancedSection = document.getElementById(
+		"template-advanced-section"
 	);
 	const interpreterSection = document.getElementById("interpreter-section");
 
@@ -47,10 +50,16 @@ export function updatePromptContextVisibility(): void {
 			: "none";
 	}
 
+	if (templateAdvancedSection) {
+		templateAdvancedSection.style.display = interpreterToggle.checked
+			? "block"
+			: "none";
+	}
+
 	if (interpreterSection) {
 		interpreterSection.classList.toggle(
 			"is-disabled",
-			!interpreterToggle.checked,
+			!interpreterToggle.checked
 		);
 	}
 }
@@ -58,12 +67,12 @@ export function updatePromptContextVisibility(): void {
 export async function initializeInterpreterSettings(): Promise<void> {
 	try {
 		const interpreterSettingsForm = document.getElementById(
-			"interpreter-settings-form",
+			"interpreter-settings-form"
 		);
 		if (interpreterSettingsForm) {
 			interpreterSettingsForm.addEventListener(
 				"input",
-				debounce(saveInterpreterSettingsFromForm, 500),
+				debounce(saveInterpreterSettingsFromForm, 500)
 			);
 		}
 
@@ -84,7 +93,7 @@ export async function initializeInterpreterSettings(): Promise<void> {
 		debugLog(
 			"Interpreter",
 			"Fetched preset providers:",
-			cachedPresetProviders,
+			cachedPresetProviders
 		);
 
 		// Initialize lists with error handling
@@ -105,7 +114,7 @@ export async function initializeInterpreterSettings(): Promise<void> {
 		initializeInterpreterToggles();
 
 		const defaultPromptContextInput = document.getElementById(
-			"default-prompt-context",
+			"default-prompt-context"
 		) as HTMLTextAreaElement;
 		if (defaultPromptContextInput) {
 			defaultPromptContextInput.value =
@@ -119,14 +128,14 @@ export async function initializeInterpreterSettings(): Promise<void> {
 		const addModelBtn = document.getElementById("add-model-btn");
 		if (addModelBtn) {
 			addModelBtn.addEventListener("click", (event) =>
-				addModelToList(event),
+				addModelToList(event)
 			);
 		}
 
 		const addProviderBtn = document.getElementById("add-provider-btn");
 		if (addProviderBtn) {
 			addProviderBtn.addEventListener("click", (event) =>
-				addProviderToList(event),
+				addProviderToList(event)
 			);
 		}
 	} catch (error) {
@@ -146,7 +155,7 @@ function initializeInterpreterToggles(): void {
 		(checked) => {
 			saveSettings({ ...generalSettings, interpreterEnabled: checked });
 			updatePromptContextVisibility();
-		},
+		}
 	);
 
 	initializeSettingToggle(
@@ -154,7 +163,7 @@ function initializeInterpreterToggles(): void {
 		generalSettings.interpreterAutoRun,
 		(checked) => {
 			saveSettings({ ...generalSettings, interpreterAutoRun: checked });
-		},
+		}
 	);
 }
 
@@ -162,7 +171,7 @@ function initializeProviderList() {
 	debugLog(
 		"Providers",
 		"Initializing provider list with:",
-		generalSettings.providers,
+		generalSettings.providers
 	);
 	const providerList = document.getElementById("provider-list");
 	if (!providerList) {
@@ -173,14 +182,14 @@ function initializeProviderList() {
 	const sortedProviders = [...generalSettings.providers]
 		.filter((p) => p)
 		.sort((a, b) =>
-			a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+			a.name.toLowerCase().localeCompare(b.name.toLowerCase())
 		);
 
 	// Clear existing providers
 	providerList.textContent = "";
 	sortedProviders.forEach((provider, index) => {
 		const originalIndex = generalSettings.providers.findIndex(
-			(p) => p.id === provider.id,
+			(p) => p.id === provider.id
 		);
 		const providerItem = createProviderListItem(provider, originalIndex);
 		providerList.appendChild(providerItem);
@@ -192,7 +201,7 @@ function initializeProviderList() {
 
 function createProviderListItem(
 	provider: Provider,
-	index: number,
+	index: number
 ): HTMLElement {
 	const providerItem = document.createElement("div");
 	providerItem.className = "provider-list-item";
@@ -200,7 +209,7 @@ function createProviderListItem(
 	providerItem.dataset.providerId = provider.id;
 
 	const presetProvider = Object.values(cachedPresetProviders || {}).find(
-		(preset) => preset.name === provider.name,
+		(preset) => preset.name === provider.name
 	);
 
 	const hasNoKey = presetProvider?.apiKeyRequired && !provider.apiKey;
@@ -217,7 +226,9 @@ function createProviderListItem(
 	const providerIconContainer = document.createElement("div");
 	providerIconContainer.className = "provider-icon-container";
 	const providerIconSpan = document.createElement("span");
-	providerIconSpan.className = `provider-icon icon-${provider.name.toLowerCase().replace(/\s+/g, "-")}`;
+	providerIconSpan.className = `provider-icon icon-${provider.name
+		.toLowerCase()
+		.replace(/\s+/g, "-")}`;
 	providerIconContainer.appendChild(providerIconSpan);
 
 	// Create provider name text
@@ -284,7 +295,7 @@ function createProviderListItem(
 		const providerId = editProviderBtn.getAttribute("data-provider-id");
 		if (providerId) {
 			const providerIndex = generalSettings.providers.findIndex(
-				(p) => p.id === providerId,
+				(p) => p.id === providerId
 			);
 			if (providerIndex !== -1) {
 				editProvider(providerIndex);
@@ -298,7 +309,7 @@ function createProviderListItem(
 		const providerId = deleteProviderBtn.getAttribute("data-provider-id");
 		if (providerId) {
 			const providerIndex = generalSettings.providers.findIndex(
-				(p) => p.id === providerId,
+				(p) => p.id === providerId
 			);
 			if (providerIndex !== -1) {
 				deleteProvider(providerIndex);
@@ -347,14 +358,14 @@ function deleteProvider(index: number): void {
 	const providerToDelete = generalSettings.providers[index];
 
 	const modelsUsingProvider = generalSettings.models.filter(
-		(m) => m.providerId === providerToDelete.id,
+		(m) => m.providerId === providerToDelete.id
 	);
 	if (modelsUsingProvider.length > 0) {
 		alert(
 			getMessage("cannotDeleteProvider", [
 				providerToDelete.name,
 				modelsUsingProvider.length.toString(),
-			]),
+			])
 		);
 		return;
 	}
@@ -382,30 +393,30 @@ async function showProviderModal(provider: Provider, index?: number) {
 	if (titleElement) {
 		titleElement.setAttribute(
 			"data-i18n",
-			index !== undefined ? "editProvider" : "addProviderTitle",
+			index !== undefined ? "editProvider" : "addProviderTitle"
 		);
 	}
 
 	const form = modal.querySelector("#provider-form") as HTMLFormElement;
 	if (form) {
 		const nameInput = form.querySelector(
-			'[name="name"]',
+			'[name="name"]'
 		) as HTMLInputElement;
 		const baseUrlInput = form.querySelector(
-			'[name="baseUrl"]',
+			'[name="baseUrl"]'
 		) as HTMLInputElement;
 		const apiKeyInput = form.querySelector(
-			'[name="apiKey"]',
+			'[name="apiKey"]'
 		) as HTMLInputElement;
 		const presetSelect = form.querySelector(
-			'[name="preset"]',
+			'[name="preset"]'
 		) as HTMLSelectElement;
 		const nameContainer = nameInput.closest(".setting-item") as HTMLElement;
 		const apiKeyContainer = apiKeyInput.closest(
-			".setting-item",
+			".setting-item"
 		) as HTMLElement;
 		const apiKeyDescription = form.querySelector(
-			'.setting-item:has([name="apiKey"]) .setting-item-description',
+			'.setting-item:has([name="apiKey"]) .setting-item-description'
 		) as HTMLElement;
 
 		if (
@@ -450,13 +461,13 @@ async function showProviderModal(provider: Provider, index?: number) {
 			apiKeyInput.value = provider.apiKey;
 
 			const matchingPreset = Object.entries(
-				cachedPresetProviders || {},
+				cachedPresetProviders || {}
 			).find(([_, p]) => p.baseUrl === provider.baseUrl);
 			currentPresetId = matchingPreset ? matchingPreset[0] : null;
 
 			if (!currentPresetId) {
 				const nameMatchingPreset = Object.entries(
-					cachedPresetProviders || {},
+					cachedPresetProviders || {}
 				).find(([_, p]) => p.name === provider.name);
 				currentPresetId = nameMatchingPreset
 					? nameMatchingPreset[0]
@@ -466,7 +477,7 @@ async function showProviderModal(provider: Provider, index?: number) {
 			presetSelect.value = currentPresetId || "";
 		} else {
 			const anthropicPreset = Object.entries(
-				cachedPresetProviders || {},
+				cachedPresetProviders || {}
 			).find(([_, p]) => p.name === "Anthropic");
 			presetSelect.value = anthropicPreset ? anthropicPreset[0] : "";
 		}
@@ -500,7 +511,7 @@ async function showProviderModal(provider: Provider, index?: number) {
 				) {
 					const message = getMessage("getApiKeyHere").replace(
 						"$1",
-						selectedPreset.name,
+						selectedPreset.name
 					);
 					apiKeyDescription.textContent =
 						getMessage("providerApiKeyDescription") + " ";
@@ -511,7 +522,7 @@ async function showProviderModal(provider: Provider, index?: number) {
 					apiKeyDescription.appendChild(linkElement);
 				} else {
 					apiKeyDescription.textContent = getMessage(
-						"providerApiKeyDescription",
+						"providerApiKeyDescription"
 					);
 				}
 			} else {
@@ -530,7 +541,7 @@ async function showProviderModal(provider: Provider, index?: number) {
 
 				apiKeyContainer.style.display = "block";
 				apiKeyDescription.textContent = getMessage(
-					"providerApiKeyDescription",
+					"providerApiKeyDescription"
 				);
 			}
 		};
@@ -603,7 +614,7 @@ async function showProviderModal(provider: Provider, index?: number) {
 		debugLog(
 			"Providers",
 			"Updated providers list:",
-			generalSettings.providers,
+			generalSettings.providers
 		);
 
 		try {
@@ -633,12 +644,12 @@ export function initializeModelList() {
 	const sortedModels = [...generalSettings.models]
 		.filter((m) => m)
 		.sort((a, b) =>
-			a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+			a.name.toLowerCase().localeCompare(b.name.toLowerCase())
 		);
 
 	sortedModels.forEach((model) => {
 		const originalIndex = generalSettings.models.findIndex(
-			(m) => m.id === model.id,
+			(m) => m.id === model.id
 		);
 		if (originalIndex !== -1) {
 			const modelItem = createModelListItem(model, originalIndex);
@@ -657,7 +668,7 @@ function createModelListItem(model: ModelConfig, index: number): HTMLElement {
 	modelItem.dataset.modelId = model.id;
 
 	const provider = generalSettings.providers.find(
-		(p) => p.id === model.providerId,
+		(p) => p.id === model.providerId
 	);
 
 	// Create drag handle
@@ -687,7 +698,7 @@ function createModelListItem(model: ModelConfig, index: number): HTMLElement {
 		alertIcon.setAttribute("data-lucide", "alert-triangle");
 		modelProviderDiv.appendChild(alertIcon);
 		modelProviderDiv.appendChild(
-			document.createTextNode(" " + getMessage("unknownProvider")),
+			document.createTextNode(" " + getMessage("unknownProvider"))
 		);
 	}
 
@@ -749,7 +760,7 @@ function createModelListItem(model: ModelConfig, index: number): HTMLElement {
 	initializeToggles(modelItem);
 	checkbox.addEventListener("change", () => {
 		const modelIndex = generalSettings.models.findIndex(
-			(m) => m.id === model.id,
+			(m) => m.id === model.id
 		);
 		if (modelIndex !== -1) {
 			generalSettings.models[modelIndex].enabled = checkbox.checked;
@@ -762,7 +773,7 @@ function createModelListItem(model: ModelConfig, index: number): HTMLElement {
 		e.stopPropagation();
 		const modelId = duplicateModelBtn.getAttribute("data-model-id");
 		const modelIndex = generalSettings.models.findIndex(
-			(m) => m.id === modelId,
+			(m) => m.id === modelId
 		);
 		if (modelIndex !== -1) {
 			duplicateModel(modelIndex);
@@ -774,7 +785,7 @@ function createModelListItem(model: ModelConfig, index: number): HTMLElement {
 		e.stopPropagation();
 		const modelId = editModelBtn.getAttribute("data-model-id");
 		const modelIndex = generalSettings.models.findIndex(
-			(m) => m.id === modelId,
+			(m) => m.id === modelId
 		);
 		if (modelIndex !== -1) {
 			editModel(modelIndex);
@@ -786,7 +797,7 @@ function createModelListItem(model: ModelConfig, index: number): HTMLElement {
 		e.stopPropagation();
 		const modelId = deleteModelBtn.getAttribute("data-model-id");
 		const modelIndex = generalSettings.models.findIndex(
-			(m) => m.id === modelId,
+			(m) => m.id === modelId
 		);
 		if (modelIndex !== -1) {
 			deleteModel(modelIndex);
@@ -831,29 +842,29 @@ async function showModelModal(model: ModelConfig, index?: number) {
 	if (titleElement) {
 		titleElement.setAttribute(
 			"data-i18n",
-			index !== undefined ? "editModel" : "addModelTitle",
+			index !== undefined ? "editModel" : "addModelTitle"
 		);
 	}
 
 	const form = modal.querySelector("#model-form") as HTMLFormElement;
 	if (form) {
 		const providerSelect = form.querySelector(
-			'[name="providerId"]',
+			'[name="providerId"]'
 		) as HTMLSelectElement;
 		const modelIdDescriptionContainer = form.querySelector(
-			'.setting-item:has([name="providerModelId"]) .setting-item-description',
+			'.setting-item:has([name="providerModelId"]) .setting-item-description'
 		) as HTMLElement;
 		const modelSelectionContainer = form.querySelector(
-			".model-selection-container",
+			".model-selection-container"
 		) as HTMLElement;
 		const modelSelectionRadios = form.querySelector(
-			"#model-selection-radios",
+			"#model-selection-radios"
 		) as HTMLElement;
 		const nameInput = form.querySelector(
-			'[name="name"]',
+			'[name="name"]'
 		) as HTMLInputElement;
 		const providerModelIdInput = form.querySelector(
-			'[name="providerModelId"]',
+			'[name="providerModelId"]'
 		) as HTMLInputElement;
 
 		if (
@@ -880,7 +891,7 @@ async function showModelModal(model: ModelConfig, index?: number) {
 		const sortedProviders = [...generalSettings.providers]
 			.filter((p) => p)
 			.sort((a, b) =>
-				a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+				a.name.toLowerCase().localeCompare(b.name.toLowerCase())
 			);
 		sortedProviders.forEach((provider) => {
 			const option = document.createElement("option");
@@ -897,13 +908,13 @@ async function showModelModal(model: ModelConfig, index?: number) {
 		// Clear model selection radios
 		modelSelectionRadios.textContent = "";
 		modelIdDescriptionContainer.textContent = getMessage(
-			"providerModelIdDescription",
+			"providerModelIdDescription"
 		);
 
 		const updateModelOptions = () => {
 			const selectedProviderId = providerSelect.value;
 			const provider = generalSettings.providers.find(
-				(p) => p.id === selectedProviderId,
+				(p) => p.id === selectedProviderId
 			);
 
 			nameInput.value =
@@ -920,12 +931,12 @@ async function showModelModal(model: ModelConfig, index?: number) {
 			modelSelectionRadios.textContent = "";
 			modelSelectionContainer.style.display = "none";
 			modelIdDescriptionContainer.textContent = getMessage(
-				"providerModelIdDescription",
+				"providerModelIdDescription"
 			);
 
 			if (provider && cachedPresetProviders) {
 				const presetProvider = Object.values(
-					cachedPresetProviders,
+					cachedPresetProviders
 				).find((preset) => preset.name === provider.name);
 
 				if (presetProvider?.modelsList) {
@@ -936,11 +947,11 @@ async function showModelModal(model: ModelConfig, index?: number) {
 					linkElement.target = "_blank";
 					linkElement.textContent = getMessage(
 						"modelsListFor",
-						provider.name,
+						provider.name
 					);
 					modelIdDescriptionContainer.appendChild(linkElement);
 					modelIdDescriptionContainer.appendChild(
-						document.createTextNode("."),
+						document.createTextNode(".")
 					);
 				}
 
@@ -1006,7 +1017,7 @@ async function showModelModal(model: ModelConfig, index?: number) {
 					modelSelectionRadios.appendChild(otherRadio);
 
 					const popularMatch = presetProvider.popularModels.some(
-						(pm) => pm.id === model.providerModelId,
+						(pm) => pm.id === model.providerModelId
 					);
 					if (
 						index !== undefined &&
@@ -1016,7 +1027,7 @@ async function showModelModal(model: ModelConfig, index?: number) {
 						otherRadioInput.checked = true;
 					} else if (index === undefined) {
 						const recommended = presetProvider.popularModels.find(
-							(pm) => pm.recommended,
+							(pm) => pm.recommended
 						);
 						if (!recommended) {
 							otherRadioInput.checked = true;
@@ -1045,7 +1056,7 @@ async function showModelModal(model: ModelConfig, index?: number) {
 						} else {
 							const selectedPopModel =
 								presetProvider.popularModels?.find(
-									(m) => m.id === target.value,
+									(m) => m.id === target.value
 								);
 							if (selectedPopModel) {
 								nameInput.value = selectedPopModel.name;
@@ -1107,7 +1118,7 @@ async function showModelModal(model: ModelConfig, index?: number) {
 
 			updatedModel.name = formData.get("name") as string;
 			updatedModel.providerModelId = formData.get(
-				"providerModelId",
+				"providerModelId"
 			) as string;
 
 			if (
@@ -1153,25 +1164,25 @@ function deleteModel(index: number) {
 
 function initializeAutoSave(): void {
 	const interpreterSettingsForm = document.getElementById(
-		"interpreter-settings-form",
+		"interpreter-settings-form"
 	);
 	if (interpreterSettingsForm) {
 		interpreterSettingsForm.addEventListener(
 			"input",
-			debounce(saveInterpreterSettingsFromForm, 500),
+			debounce(saveInterpreterSettingsFromForm, 500)
 		);
 	}
 }
 
 function saveInterpreterSettingsFromForm(): void {
 	const interpreterToggle = document.getElementById(
-		"interpreter-toggle",
+		"interpreter-toggle"
 	) as HTMLInputElement;
 	const interpreterAutoRunToggle = document.getElementById(
-		"interpreter-auto-run-toggle",
+		"interpreter-auto-run-toggle"
 	) as HTMLInputElement;
 	const defaultPromptContextInput = document.getElementById(
-		"default-prompt-context",
+		"default-prompt-context"
 	) as HTMLTextAreaElement;
 
 	const updatedSettings: Partial<typeof generalSettings> = {};

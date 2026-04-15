@@ -110,6 +110,9 @@
 	"advanced": {
 		"message": "Advanced"
 	},
+	"allHighlights": {
+		"message": "All highlights"
+	},
 	"allProperties": {
 		"message": "All properties"
 	},
@@ -246,6 +249,15 @@
 	"delete": {
 		"message": "Delete"
 	},
+	"deleteAllHighlightsConfirm": {
+		"message": "Are you sure you want to delete all highlights?"
+	},
+	"deleteHighlightsForDomain": {
+		"message": "Delete all highlights for this domain?"
+	},
+	"deleteHighlightsForPage": {
+		"message": "Delete all highlights for this page?"
+	},
 	"deleteModelConfirm": {
 		"message": "Are you sure you want to delete this model?"
 	},
@@ -280,6 +292,9 @@
 	},
 	"earlyAccessFeatures": {
 		"message": "Early access features"
+	},
+	"edit": {
+		"message": "Edit"
 	},
 	"editModel": {
 		"message": "Edit model"
@@ -444,6 +459,12 @@
 	"highlighterSettings": {
 		"message": "Highlighter"
 	},
+	"highlights": {
+		"message": "Highlights"
+	},
+	"highlightsNotFound": {
+		"message": "Highlights not found in article"
+	},
 	"history": {
 		"message": "History"
 	},
@@ -529,6 +550,12 @@
 	"legacyModeDescription": {
 		"message": "Uses the URI clipping method compatible with Obsidian 1.6.7 or earlier. Note that the length of the content you can clip is limited by your browser and OS. Some pages may fail without any errors."
 	},
+	"loadArticle": {
+		"message": "Read article"
+	},
+	"loading": {
+		"message": "Loading…"
+	},
 	"modelName": {
 		"message": "Display name"
 	},
@@ -561,6 +588,9 @@
 	},
 	"noHighlights": {
 		"message": "Do nothing"
+	},
+	"noResults": {
+		"message": "No results found"
 	},
 	"noTemplates": {
 		"message": "No templates available. Please add a template in the settings."
@@ -614,6 +644,12 @@
 	},
 	"openEmbedded": {
 		"message": "Open in page"
+	},
+	"openHighlights": {
+		"message": "Open highlights"
+	},
+	"openReader": {
+		"message": "Open Reader"
 	},
 	"openSidePanel": {
 		"message": "Open side panel"
@@ -852,6 +888,9 @@
 	"readerLineWidth": {
 		"message": "Line width"
 	},
+	"readerLoadFailed": {
+		"message": "Failed to load. The page may be blocked by your browser."
+	},
 	"readerLoading": {
 		"message": "Defuddling…"
 	},
@@ -881,6 +920,9 @@
 	},
 	"readerTypography": {
 		"message": "Typography"
+	},
+	"readerUrlPlaceholder": {
+		"message": "Paste a URL to read…"
 	},
 	"readerViewFullSize": {
 		"message": "View full size"
@@ -935,6 +977,9 @@
 	},
 	"saveFile": {
 		"message": "Save file..."
+	},
+	"searchHighlightsPlaceholder": {
+		"message": "Search highlights…"
 	},
 	"searchVariables": {
 		"message": "Search variables..."
@@ -995,6 +1040,21 @@
 	},
 	"silentOpenDescription": {
 		"message": "Clipped notes will be saved but will not open as a new tab. Obsidian will still be brought to the foreground."
+	},
+	"sort": {
+		"message": "Sort"
+	},
+	"sortAZ": {
+		"message": "A to Z"
+	},
+	"sortNewOld": {
+		"message": "Newest first"
+	},
+	"sortOldNew": {
+		"message": "Oldest first"
+	},
+	"sortZA": {
+		"message": "Z to A"
 	},
 	"specificNoteName": {
 		"message": "Specific note name"

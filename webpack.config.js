@@ -30,8 +30,8 @@ module.exports = (env, argv) => {
 			return isFirefox
 				? "dist_firefox"
 				: isSafari
-					? "dist_safari"
-					: "dist";
+				? "dist_safari"
+				: "dist";
 		} else {
 			return isFirefox ? "dev_firefox" : isSafari ? "dev_safari" : "dev";
 		}
@@ -45,6 +45,8 @@ module.exports = (env, argv) => {
 		entry: {
 			popup: "./src/core/popup.ts",
 			settings: "./src/core/settings.ts",
+			highlights: "./src/core/highlights.ts",
+			"reader-page": "./src/core/reader-view.ts",
 			content: "./src/content.ts",
 			background: "./src/background.ts",
 			style: "./src/style.scss",
@@ -102,11 +104,11 @@ module.exports = (env, argv) => {
 			alias: {
 				"./utils/browser-polyfill": path.resolve(
 					__dirname,
-					"node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
+					"node_modules/webextension-polyfill/dist/browser-polyfill.min.js"
 				),
 				"../utils/browser-polyfill": path.resolve(
 					__dirname,
-					"node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
+					"node_modules/webextension-polyfill/dist/browser-polyfill.min.js"
 				),
 			},
 		},
@@ -153,13 +155,15 @@ module.exports = (env, argv) => {
 						from: isFirefox
 							? "src/manifest.firefox.json"
 							: isSafari
-								? "src/manifest.safari.json"
-								: "src/manifest.chrome.json",
+							? "src/manifest.safari.json"
+							: "src/manifest.chrome.json",
 						to: "manifest.json",
 					},
 					{ from: "src/popup.html", to: "popup.html" },
 					{ from: "src/side-panel.html", to: "side-panel.html" },
 					{ from: "src/settings.html", to: "settings.html" },
+					{ from: "src/highlights.html", to: "highlights.html" },
+					{ from: "src/reader.html", to: "reader.html" },
 					{ from: "src/icons", to: "icons" },
 					{
 						from: "node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
@@ -184,7 +188,7 @@ module.exports = (env, argv) => {
 						"RemoveDSStore",
 						(compilation) => {
 							removeDSStore(path.resolve(__dirname, outputDir));
-						},
+						}
 					);
 				},
 			},
@@ -198,7 +202,7 @@ module.exports = (env, argv) => {
 							path: path.resolve(__dirname, "builds"),
 							filename: `clipper-for-appflowy-${package.version}-${browserName}.zip`,
 						}),
-					]
+				  ]
 				: []),
 		],
 	};

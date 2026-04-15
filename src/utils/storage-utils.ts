@@ -47,6 +47,7 @@ export let generalSettings: Settings = {
 		defaultFont: "",
 		blendImages: true,
 		colorLinks: false,
+		followLinks: true,
 		pinPlayer: true,
 		autoScroll: true,
 		highlightActiveLine: true,
@@ -111,6 +112,7 @@ interface StorageData {
 		defaultFont?: string;
 		blendImages?: boolean;
 		colorLinks?: boolean;
+		followLinks?: boolean;
 		pinPlayer?: boolean;
 		autoScroll?: boolean;
 		highlightActiveLine?: boolean;
@@ -185,6 +187,7 @@ export async function loadSettings(): Promise<Settings> {
 			defaultFont: "",
 			blendImages: true,
 			colorLinks: false,
+			followLinks: true,
 			pinPlayer: true,
 			autoScroll: true,
 			highlightActiveLine: true,
@@ -311,6 +314,9 @@ export async function loadSettings(): Promise<Settings> {
 			colorLinks:
 				data.reader_settings?.colorLinks ??
 				defaultSettings.readerSettings.colorLinks,
+			followLinks:
+				data.reader_settings?.followLinks ??
+				defaultSettings.readerSettings.followLinks,
 			pinPlayer:
 				data.reader_settings?.pinPlayer ??
 				defaultSettings.readerSettings.pinPlayer,
@@ -399,6 +405,7 @@ export async function saveSettings(
 			defaultFont: generalSettings.readerSettings.defaultFont,
 			blendImages: generalSettings.readerSettings.blendImages,
 			colorLinks: generalSettings.readerSettings.colorLinks,
+			followLinks: generalSettings.readerSettings.followLinks,
 			pinPlayer: generalSettings.readerSettings.pinPlayer,
 			autoScroll: generalSettings.readerSettings.autoScroll,
 			highlightActiveLine:

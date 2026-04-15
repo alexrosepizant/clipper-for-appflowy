@@ -147,6 +147,15 @@ async function getTabInfo(tabId: number): Promise<{ id: number; url: string }> {
 			(response && response.error) || "Failed to get tab info"
 		);
 	}
+	// On the reader page, tabs.get() can't see the extension page URL
+	// without the tabs permission. Fall back to the readerUrl param
+	// passed through the iframe src.
+	if (!response.tab.url) {
+		const readerUrl = urlParams.get("readerUrl");
+		if (readerUrl) {
+			response.tab.url = readerUrl;
+		}
+	}
 	return response.tab;
 }
 
@@ -304,7 +313,10 @@ const debouncedHighlightRefresh = debounce(() => {
 	if (currentTabId !== undefined) {
 		memoizedExtractPageContent.clear();
 		memoizedCompileTemplate.clear();
-		refreshFields(currentTabId, { checkTemplateTriggers: false, rebuildSkeleton: false });
+		refreshFields(currentTabId, {
+			checkTemplateTriggers: false,
+			rebuildSkeleton: false,
+		});
 	}
 }, 300);
 
@@ -423,7 +435,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const currentBrowser = await detectBrowser();
 		const isMobile = currentBrowser === "mobile-safari";
 
-		const openBehavior: Settings['openBehavior'] = isMobile && loadedSettings.openBehavior !== 'reader' ? 'popup' : loadedSettings.openBehavior;
+		const openBehavior: Settings["openBehavior"] =
+			isMobile && loadedSettings.openBehavior !== "reader"
+				? "popup"
+				: loadedSettings.openBehavior;
 
 		// Check if we should open in an iframe, but only if the URL is valid
 		if (
@@ -451,18 +466,24 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 
 		// Check if we should open in reader mode
-		if (isValidUrl(tab.url) && !isBlankPage(tab.url) && openBehavior === 'reader' && !isIframe && !isSidePanel) {
+		if (
+			isValidUrl(tab.url) &&
+			!isBlankPage(tab.url) &&
+			openBehavior === "reader" &&
+			!isIframe &&
+			!isSidePanel
+		) {
 			try {
-				const response = await browser.runtime.sendMessage({
+				const response = (await browser.runtime.sendMessage({
 					action: "toggleReaderMode",
-					tabId: currentTabId
-				}) as ReaderModeResponse;
+					tabId: currentTabId,
+				})) as ReaderModeResponse;
 				if (response && response.success) {
 					window.close();
 					return;
 				}
 			} catch (error) {
-				console.error('Error toggling reader mode:', error);
+				console.error("Error toggling reader mode:", error);
 				// If there's an error, we'll fall through and open the normal popup.
 			}
 		}
@@ -474,9 +495,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const refreshButton = document.getElementById("refresh-pane");
 		if (refreshButton) {
 			if (isIframe) {
-				refreshButton.style.display = 'none';
+				refreshButton.style.display = "none";
 			} else {
-				refreshButton.addEventListener('click', (e) => {
+				refreshButton.addEventListener("click", (e) => {
 					e.preventDefault();
 					refreshPopup();
 					initializeIcons(refreshButton);
@@ -753,10 +774,12 @@ function setupEventListeners(tabId: number) {
 			} else {
 				// Test if we can share files (only on Safari)
 				try {
-					const testFile = new File(["test"], "test.txt", { type: "text/plain" });
+					const testFile = new File(["test"], "test.txt", {
+						type: "text/plain",
+					});
 					const testShare = { files: [testFile] };
 					if (!navigator.canShare(testShare)) {
-						throw new Error('canShare returned false');
+						throw new Error("canShare returned false");
 					}
 				} catch {
 					shareButtonElements.forEach((button) => {
@@ -774,7 +797,9 @@ function setupEventListeners(tabId: number) {
 
 	const readerModeButton = document.getElementById("reader-mode");
 	if (readerModeButton) {
-		readerModeButton.addEventListener('click', () => toggleReaderMode(tabId));
+		readerModeButton.addEventListener("click", () =>
+			toggleReaderMode(tabId)
+		);
 		checkReaderModeState(tabId);
 	}
 }
@@ -873,7 +898,13 @@ async function waitForInterpreter(
 	});
 }
 
-async function refreshFields(tabId: number, { checkTemplateTriggers = true, rebuildSkeleton = true }: { checkTemplateTriggers?: boolean; rebuildSkeleton?: boolean } = {}) {
+async function refreshFields(
+	tabId: number,
+	{
+		checkTemplateTriggers = true,
+		rebuildSkeleton = true,
+	}: { checkTemplateTriggers?: boolean; rebuildSkeleton?: boolean } = {}
+) {
 	if (templates.length === 0) {
 		console.warn("No templates available");
 		showError("noTemplates");
@@ -1572,27 +1603,42 @@ function refreshPopup() {
 }
 
 function handleTemplateChange(templateId: string) {
-	currentTemplate = templates.find(t => t.id === templateId) || templates[0];
+	currentTemplate =
+		templates.find((t) => t.id === templateId) || templates[0];
 	refreshFields(currentTabId!, { checkTemplateTriggers: false });
+}
+
+function setReaderButtonState(isActive: boolean) {
+	const readerButton = document.getElementById("reader-mode");
+	if (readerButton) {
+		readerButton.classList.toggle("active", isActive);
+		readerButton.setAttribute("aria-pressed", isActive.toString());
+		readerButton.title = isActive
+			? getMessage("disableReader")
+			: getMessage("enableReader");
+	}
 }
 
 async function checkReaderModeState(tabId: number) {
 	try {
+		// When embedded in a reader.html page, we know reader mode is active
+		if (urlParams.get("readerUrl")) {
+			setReaderButtonState(true);
+			return;
+		}
+
 		// Query the actual page DOM via content script rather than
 		// relying on background state, which can be stale across tabs
-		const response = await browser.runtime.sendMessage({
+		const response = (await browser.runtime.sendMessage({
 			action: "sendMessageToTab",
 			tabId: tabId,
-			message: { action: "getReaderModeState" }
-		}) as { isActive: boolean } | undefined;
+			message: { action: "getReaderModeState" },
+		})) as { isActive: boolean } | undefined;
 
-		const readerButton = document.getElementById('reader-mode');
-		if (readerButton) {
-			readerButton.classList.toggle('active', response?.isActive ?? false);
-		}
+		setReaderButtonState(response?.isActive ?? false);
 	} catch (error) {
 		// Tab may not have content script loaded yet
-		console.error('Error checking reader mode state:', error);
+		console.error("Error checking reader mode state:", error);
 	}
 }
 
@@ -1645,10 +1691,15 @@ function updateHighlighterModeUI(isActive: boolean) {
 	const highlighterModeButton = document.getElementById("highlighter-mode");
 	if (highlighterModeButton) {
 		if (generalSettings.highlighterEnabled) {
-			highlighterModeButton.style.display = 'flex';
-			highlighterModeButton.classList.toggle('active', isActive);
-			highlighterModeButton.setAttribute('aria-pressed', isActive.toString());
-			highlighterModeButton.title = isActive ? getMessage('disableHighlighter') : getMessage('highlighterOn');
+			highlighterModeButton.style.display = "flex";
+			highlighterModeButton.classList.toggle("active", isActive);
+			highlighterModeButton.setAttribute(
+				"aria-pressed",
+				isActive.toString()
+			);
+			highlighterModeButton.title = isActive
+				? getMessage("disableHighlighter")
+				: getMessage("highlighterOn");
 		} else {
 			highlighterModeButton.style.display = "none";
 		}
@@ -1657,21 +1708,16 @@ function updateHighlighterModeUI(isActive: boolean) {
 
 async function toggleReaderMode(tabId: number) {
 	try {
+		// When embedded in a reader.html page, pass the reader URL
+		// so the background can navigate away even without tab URL access
 		const response = (await browser.runtime.sendMessage({
 			action: "toggleReaderMode",
 			tabId: tabId,
+			readerUrl: urlParams.get("readerUrl") || undefined,
 		})) as ReaderModeResponse;
 
 		if (response && response.success) {
-			const readerButton = document.getElementById("reader-mode");
-			if (readerButton) {
-				const isActive = response.isActive ?? false;
-				readerButton.classList.toggle("active", isActive);
-				readerButton.setAttribute("aria-pressed", isActive.toString());
-				readerButton.title = isActive
-					? getMessage("disableReader")
-					: getMessage("enableReader");
-			}
+			setReaderButtonState(response.isActive ?? false);
 		}
 
 		// Close the popup if not in side panel or iframe
