@@ -71,7 +71,7 @@ npm run test:watch  # watch mode
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/alexrosepizant"><img src="https://avatars.githubusercontent.com/u/9919730?v=4?s=100" width="100px;" alt="Alexandre Rose-Pizant"/><br /><sub><b>Alexandre Rose-Pizant</b></sub></a><br /><a href="https://github.com/alexrosepizant/clipper-for-appflowy/commits?author=alexrosepizant" title="Code">💻</a> <a href="https://github.com/alexrosepizant/clipper-for-appflowy/commits?author=alexrosepizant" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/alexrosepizant"><img src="https://avatars.githubusercontent.com/u/9919730?v=4?s=100" width="100px;" alt="Alex Rose-Pizant"/><br /><sub><b>Alex Rose-Pizant</b></sub></a><br /><a href="https://github.com/alexrosepizant/clipper-for-appflowy/commits?author=alexrosepizant" title="Code">💻</a> <a href="https://github.com/alexrosepizant/clipper-for-appflowy/commits?author=alexrosepizant" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
@@ -94,4 +94,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 ## License
 
-Obsidian Web Clipper source code is open source under the MIT License. All trademarks, icons, marketing copy, and other marketing assets are excluded from that license.
+Clipper for AppFlowy source code is open source under the MIT License. All trademarks, icons, marketing copy, and other marketing assets are excluded from that license.
