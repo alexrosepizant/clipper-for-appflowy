@@ -1,4 +1,4 @@
-
+<p align="center"><img src="assets/logo.svg" alt="Clipper for AppFlowy" width="80" align="middle" /></p>
 
 <h1 align="center">Clipper for AppFlowy</h1>
 
@@ -10,8 +10,6 @@
 ## What is it?
 
 An unofficial browser extension that lets you save web pages, articles, and highlights directly to your [AppFlowy](https://github.com/AppFlowy-IO/AppFlowy) workspace — with one click.
-
-<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/2023_Obsidian_logo.svg/1280px-2023_Obsidian_logo.svg.png" alt="Obsidian Clipper" width="70" align="middle" />&nbsp;&nbsp;＋&nbsp;&nbsp;<img src="https://avatars.githubusercontent.com/u/86002201?s=80&v=4" alt="AppFlowy" width="80" align="middle" />&nbsp;&nbsp;→&nbsp;&nbsp;<img src="assets/logo.svg" alt="Clipper for AppFlowy" width="80" align="middle" /></p>
 
 > This is a community fork of [obsidian-clipper](https://github.com/obsidianmd/obsidian-clipper), ported to AppFlowy. Not affiliated with or endorsed by the AppFlowy team.
 
