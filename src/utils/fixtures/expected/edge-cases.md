@@ -7,6 +7,6 @@ words: 7
 ---
 Title: Test (7 words)
 
-Partial conversion completed with errors. Original HTML:
+Hello
 
-<body> <p>Hello</p> <p>Some content here for word count.</p> </body>
+Some content here for word count.

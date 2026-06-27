@@ -201,7 +201,7 @@ export async function initializePageContent(
 	}
 }
 
-function processHighlights(content: string, highlights: AnyHighlightData[]): string {
+export function processHighlights(content: string, highlights: AnyHighlightData[]): string {
 	// First check if highlighter is enabled and we have highlights
 	if (!generalSettings.highlighterEnabled || !highlights?.length) {
 		return content;
@@ -367,48 +367,93 @@ function processContentBasedHighlight(highlight: TextHighlightData | ElementHigh
 }
 
 function processContentParagraphs(sourceParagraphs: Element[], tempDiv: HTMLDivElement) {
+	// Strip each target paragraph's text once, reused across every source
+	// paragraph and both the exact and substring passes below.
+	const targets = Array.from(tempDiv.querySelectorAll('p'))
+		.map(p => ({ el: p, text: stripHtml(p.outerHTML).trim() }));
+
 	sourceParagraphs.forEach(sourceParagraph => {
 		const sourceText = stripHtml(sourceParagraph.outerHTML).trim();
+		if (!sourceText) return;
 		debugLog('Highlights', 'Looking for paragraph:', sourceText);
-		
-		const paragraphs = Array.from(tempDiv.querySelectorAll('p'));
-		for (const targetParagraph of paragraphs) {
-			const targetText = stripHtml(targetParagraph.outerHTML).trim();
-			
-			if (targetText === sourceText) {
-				debugLog('Highlights', 'Found matching paragraph:', targetParagraph.outerHTML);
-				wrapElementWithMark(targetParagraph);
-				break;
-			}
+
+		// Try an exact whole-paragraph match first.
+		const exact = targets.find(t => t.text === sourceText);
+		if (exact) {
+			debugLog('Highlights', 'Found matching paragraph:', exact.el.outerHTML);
+			wrapElementWithMark(exact.el);
+			return;
+		}
+
+		// A sentence highlighted within a paragraph is stored as that fragment
+		// wrapped in a shallow <p>, so it never equals the full paragraph. Mark
+		// the substring inside the containing paragraph (fixes #446 / #852).
+		const container = targets.find(t => t.text.includes(sourceText));
+		if (container) {
+			debugLog('Highlights', 'Found containing paragraph for partial highlight:', container.el.outerHTML);
+			processInlineContent(sourceParagraph.outerHTML, container.el, true);
 		}
 	});
 }
 
-function processInlineContent(content: string, tempDiv: HTMLElement) {
+// Locate the text node + offset for a character position within `root`'s
+// concatenated text. Used to build a range that may span multiple text nodes.
+function findTextNodeAtOffset(root: Node, offset: number): { node: Node; index: number } | null {
+	const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+	let consumed = 0;
+	let node: Node | null;
+	while ((node = walker.nextNode())) {
+		const length = node.textContent?.length || 0;
+		if (consumed + length >= offset) return { node, index: offset - consumed };
+		consumed += length;
+	}
+	return null;
+}
+
+// Wrap `searchText` in a <mark>. When `spanInline` is set the match is resolved
+// against the element's full text and may cross inline elements (a link/bold
+// mid-sentence), so it uses extractContents() — surroundContents() throws when
+// a range crosses element boundaries. Callers pass a scoped element in that
+// case; the whole-body fallback stays single-node so a range can't span blocks.
+function processInlineContent(content: string, root: HTMLElement, spanInline = false) {
 	const searchText = stripHtml(content).trim();
+	if (!searchText) return;
 	debugLog('Highlights', 'Searching for text:', searchText);
-	
-	const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT);
-	
-	let node;
-	while (node = walker.nextNode() as Text) {
-		const nodeText = node.textContent || '';
-		const index = nodeText.indexOf(searchText);
-		
-		if (index !== -1) {
-			debugLog('Highlights', 'Found matching text in node:', {
-				text: nodeText,
-				index: index
-			});
-			
-			const range = document.createRange();
-			range.setStart(node, index);
-			range.setEnd(node, index + searchText.length);
-			
-			const mark = document.createElement('mark');
-			range.surroundContents(mark);
-			debugLog('Highlights', 'Created mark element:', mark.outerHTML);
-			break;
-		}
+
+	if (spanInline) {
+		const index = (root.textContent || '').indexOf(searchText);
+		if (index === -1) return;
+		const start = findTextNodeAtOffset(root, index);
+		const end = findTextNodeAtOffset(root, index + searchText.length);
+		if (!start || !end) return;
+
+		const range = document.createRange();
+		range.setStart(start.node, start.index);
+		range.setEnd(end.node, end.index);
+		if (range.collapsed) return;
+
+		const mark = document.createElement('mark');
+		mark.appendChild(range.extractContents());
+		range.insertNode(mark);
+		debugLog('Highlights', 'Created mark element:', mark.outerHTML);
+		return;
+	}
+
+	// Single text node match: safe for a whole-body search since the range
+	// can't span unrelated blocks.
+	const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+	let node: Node | null;
+	while ((node = walker.nextNode())) {
+		const index = (node.textContent || '').indexOf(searchText);
+		if (index === -1) continue;
+
+		const range = document.createRange();
+		range.setStart(node, index);
+		range.setEnd(node, index + searchText.length);
+
+		const mark = document.createElement('mark');
+		range.surroundContents(mark);
+		debugLog('Highlights', 'Created mark element:', mark.outerHTML);
+		return;
 	}
 }
