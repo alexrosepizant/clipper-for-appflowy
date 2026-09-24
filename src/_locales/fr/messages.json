@@ -387,6 +387,14 @@
 	"highlights": {
 		"message": "Surlignages"
 	},
+	"highlightsImportSuccess": {
+		"message": "$1 surlignages importés.",
+		"placeholders": {
+			"1": {
+				"content": "$1"
+			}
+		}
+	},
 	"highlightsNotFound": {
 		"message": "Surlignages introuvables dans l’article"
 	},
@@ -407,6 +415,12 @@
 	},
 	"importFailed": {
 		"message": "L'importation a échoué. Veuillez vérifier la console pour plus de détails."
+	},
+	"importHighlights": {
+		"message": "Importer des surlignages"
+	},
+	"importHighlightsDescription": {
+		"message": "Importer des surlignages depuis un fichier. Les surlignages existants sont conservés."
 	},
 	"importModalTitle": {
 		"message": "Importer"
@@ -594,6 +608,12 @@
 	"pageVariables": {
 		"message": "Variables de page"
 	},
+	"pagesRead": {
+		"message": "page lue"
+	},
+	"pagesReadPlural": {
+		"message": "pages lues"
+	},
 	"pagesSaved": {
 		"message": "page sauvegardée"
 	},
@@ -701,6 +721,9 @@
 	},
 	"rateExtensionDescription": {
 		"message": "Appréciez-vous Web Clipper? Aidez-nous en lui donnant une note."
+	},
+	"read": {
+		"message": "Lues"
 	},
 	"reader": {
 		"message": "Lecteur"
@@ -902,6 +925,9 @@
 	},
 	"saveBehaviorLabel": {
 		"message": "Comportement de sauvegarde"
+	},
+	"saved": {
+		"message": "Sauvegardées"
 	},
 	"saveFile": {
 		"message": "Enregistrer le fichier..."

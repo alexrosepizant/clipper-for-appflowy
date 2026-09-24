@@ -381,6 +381,14 @@
 	"highlights": {
 		"message": "Korostukset"
 	},
+	"highlightsImportSuccess": {
+		"message": "Tuotiin $1 korostusta.",
+		"placeholders": {
+			"1": {
+				"content": "$1"
+			}
+		}
+	},
 	"highlightsNotFound": {
 		"message": "Artikkelista ei löytynyt korostuksia"
 	},
@@ -401,6 +409,12 @@
 	},
 	"importFailed": {
 		"message": "Tuonti epäonnistui. Tarkista konsoli lisätietoja varten."
+	},
+	"importHighlights": {
+		"message": "Tuo korostukset"
+	},
+	"importHighlightsDescription": {
+		"message": "Tuo korostukset tiedostosta. Olemassa olevat korostukset säilytetään."
 	},
 	"importModalTitle": {
 		"message": "Tuo"
@@ -588,6 +602,12 @@
 	"pageVariables": {
 		"message": "Sivun muuttujat"
 	},
+	"pagesRead": {
+		"message": "sivu luettu"
+	},
+	"pagesReadPlural": {
+		"message": "sivut luettu"
+	},
 	"pagesSaved": {
 		"message": "sivu tallennettu"
 	},
@@ -703,6 +723,9 @@
 	},
 	"rateExtensionDescription": {
 		"message": "Pidätkö Web Clipperista? Auta meitä antamalla sille arvostelu."
+	},
+	"read": {
+		"message": "Luettu"
 	},
 	"reader": {
 		"message": "Lukija"
@@ -904,6 +927,9 @@
 	},
 	"saveBehaviorLabel": {
 		"message": "Tallennuskäyttäytyminen"
+	},
+	"saved": {
+		"message": "Tallennettu"
 	},
 	"saveFile": {
 		"message": "Tallenna tiedosto..."

@@ -381,6 +381,14 @@
 	"highlights": {
 		"message": "Выделения"
 	},
+	"highlightsImportSuccess": {
+		"message": "Импортировано $1 выделений.",
+		"placeholders": {
+			"1": {
+				"content": "$1"
+			}
+		}
+	},
 	"highlightsNotFound": {
 		"message": "В статье не найдены выделения"
 	},
@@ -401,6 +409,12 @@
 	},
 	"importFailed": {
 		"message": "Импорт не удался. Пожалуйста, проверьте консоль для получения дополнительной информации."
+	},
+	"importHighlights": {
+		"message": "Импортировать выделения"
+	},
+	"importHighlightsDescription": {
+		"message": "Импортируйте выделения из файла. Существующие выделения сохраняются."
 	},
 	"importModalTitle": {
 		"message": "Импорт"
@@ -588,6 +602,12 @@
 	"pageVariables": {
 		"message": "Переменные страницы"
 	},
+	"pagesRead": {
+		"message": "страница прочитана"
+	},
+	"pagesReadPlural": {
+		"message": "страницы прочитаны"
+	},
 	"pagesSaved": {
 		"message": "страница сохранена"
 	},
@@ -695,6 +715,9 @@
 	},
 	"rateExtensionDescription": {
 		"message": "Вам нравится Web Clipper? Помогите нам, оценив его."
+	},
+	"read": {
+		"message": "Прочитано"
 	},
 	"reader": {
 		"message": "Читатель"
@@ -896,6 +919,9 @@
 	},
 	"saveBehaviorLabel": {
 		"message": "Поведение при сохранении"
+	},
+	"saved": {
+		"message": "Сохранено"
 	},
 	"saveFile": {
 		"message": "Сохранить файл..."

@@ -381,6 +381,14 @@
 	"highlights": {
 		"message": "ハイライト"
 	},
+	"highlightsImportSuccess": {
+		"message": "$1件のハイライトをインポートしました。",
+		"placeholders": {
+			"1": {
+				"content": "$1"
+			}
+		}
+	},
 	"highlightsNotFound": {
 		"message": "記事内にハイライトが見つかりません"
 	},
@@ -401,6 +409,12 @@
 	},
 	"importFailed": {
 		"message": "\"インポートに失敗しました。詳細はコンソールを確認してください。\""
+	},
+	"importHighlights": {
+		"message": "ハイライトをインポート"
+	},
+	"importHighlightsDescription": {
+		"message": "ファイルからハイライトをインポートします。既存のハイライトは保持されます。"
 	},
 	"importModalTitle": {
 		"message": "\"インポート\""
@@ -588,6 +602,12 @@
 	"pageVariables": {
 		"message": "ページ変数"
 	},
+	"pagesRead": {
+		"message": "ページを読みました"
+	},
+	"pagesReadPlural": {
+		"message": "ページを読みました"
+	},
 	"pagesSaved": {
 		"message": "ページが保存されました"
 	},
@@ -695,6 +715,9 @@
 	},
 	"rateExtensionDescription": {
 		"message": "Web Clipperを楽しんでいますか？評価をつけることで私たちを支えてください。"
+	},
+	"read": {
+		"message": "読了"
 	},
 	"reader": {
 		"message": "リーダー"
@@ -896,6 +919,9 @@
 	},
 	"saveBehaviorLabel": {
 		"message": "保存の動作"
+	},
+	"saved": {
+		"message": "保存済み"
 	},
 	"saveFile": {
 		"message": "ファイルを保存..."

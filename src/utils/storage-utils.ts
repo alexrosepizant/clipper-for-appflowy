@@ -8,7 +8,6 @@ import {
 	Rating,
 } from "../types/types";
 import { debugLog } from "./debug";
-import { copyToClipboard } from "core/popup";
 
 export type {
 	Settings,
@@ -59,6 +58,7 @@ export let generalSettings: Settings = {
 		saveFile: 0,
 		copyToClipboard: 0,
 		share: 0,
+		readerMode: 0,
 	},
 	history: [],
 	ratings: [],
@@ -133,6 +133,7 @@ interface StorageData {
 		saveFile: number;
 		copyToClipboard: number;
 		share: number;
+		readerMode?: number;
 	};
 	history?: HistoryEntry[];
 	ratings?: Rating[];
@@ -175,6 +176,7 @@ export async function loadSettings(): Promise<Settings> {
 			apiToken: "",
 			workspaceId: "",
 			parentViewId: "",
+			userEmail: "",
 		},
 		readerSettings: {
 			fontSize: 16,
@@ -199,6 +201,7 @@ export async function loadSettings(): Promise<Settings> {
 			saveFile: 0,
 			copyToClipboard: 0,
 			share: 0,
+			readerMode: 0,
 		},
 		history: [],
 		ratings: [],
@@ -330,7 +333,7 @@ export async function loadSettings(): Promise<Settings> {
 				data.reader_settings?.customCss ??
 				defaultSettings.readerSettings.customCss,
 		},
-		stats: data.stats || defaultSettings.stats,
+		stats: { ...defaultSettings.stats, ...data.stats },
 		history: data.history || defaultSettings.history,
 		ratings: data.ratings || defaultSettings.ratings,
 		saveBehavior:

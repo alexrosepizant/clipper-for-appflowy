@@ -110,28 +110,68 @@ async function resolveSelectorVariable(selectorExpr: string, tabId?: number): Pr
 	}
 }
 
-/**
- * Resolve a schema variable (schema:key format)
- */
-function resolveSchemaVariable(schemaKey: string, variables: { [key: string]: any }): any {
-	// Try direct lookup: {{schema:@type}}
-	let value = variables[`{{${schemaKey}}}`];
-	if (value !== undefined) {
-		return value;
+/** Resolve a schema variable, including shorthand and array access. */
+export function resolveSchemaVariable(name: string, variables: { [key: string]: any }): any {
+	const schemaKey = name.startsWith('schema:') ? name.slice('schema:'.length) : name;
+	const arrayMatch = schemaKey.match(/^(.*?)\[(\*|\d+)\](?:\.(.*))?$/);
+
+	if (arrayMatch) {
+		const [, arrayKey, indexOrStar, propertyPath] = arrayMatch;
+		const rawValue = resolveSchemaKey(arrayKey, variables);
+		if (rawValue === undefined) return undefined;
+
+		const parsed = parseSchemaArray(rawValue);
+		if (!Array.isArray(parsed)) return undefined;
+
+		if (indexOrStar === '*') {
+			return propertyPath
+				? parsed.map(item => getNestedValue(item, propertyPath)).filter(value => value != null)
+				: parsed;
+		}
+
+		const item = parsed[Number.parseInt(indexOrStar, 10)];
+		if (item === undefined) return undefined;
+		return propertyPath ? getNestedValue(item, propertyPath) : item;
 	}
 
-	// Try shorthand notation (without @type prefix)
-	// e.g., schema:author might be stored as {{schema:Article:author}}
-	const shortKey = schemaKey.replace('schema:', '');
-	if (!shortKey.includes('@')) {
+	const rawValue = resolveSchemaKey(schemaKey, variables);
+	return rawValue === undefined ? undefined : parseSchemaValue(rawValue);
+}
+
+function resolveSchemaKey(schemaKey: string, variables: { [key: string]: any }): any {
+	const name = `schema:${schemaKey}`;
+	const wrappedValue = variables[`{{${name}}}`];
+	if (wrappedValue !== undefined) return wrappedValue;
+	if (variables[name] !== undefined) return variables[name];
+
+	if (!schemaKey.includes('@')) {
 		const matchingKey = Object.keys(variables).find(key =>
-			key.includes('@') && key.endsWith(`:${shortKey}}}`));
-		if (matchingKey) {
-			return variables[matchingKey];
-		}
+			key.includes('@') && key.endsWith(`:${schemaKey}}}`));
+		if (matchingKey) return variables[matchingKey];
 	}
 
 	return undefined;
+}
+
+function parseSchemaArray(value: any): any {
+	if (typeof value === 'string' && value.trim().match(/^(?:\d+\.|[-*•]\s)/m)) {
+		return value
+			.split(/(?=\d+\.|[-*•]\s)/)
+			.map(item => item.replace(/^(?:\d+\.|[-*•])\s*/, '').trim())
+			.filter(Boolean);
+	}
+	return parseSchemaValue(value);
+}
+
+function parseSchemaValue(value: any): any {
+	if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
+		try {
+			return JSON.parse(value);
+		} catch {
+			// Preserve malformed JSON-like strings as ordinary values.
+		}
+	}
+	return value;
 }
 
 /**

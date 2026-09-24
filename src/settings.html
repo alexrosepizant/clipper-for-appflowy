@@ -4,6 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<title>AppFlowy Web Clipper</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@600;700&amp;display=swap">
 	<link rel="stylesheet" href="style.css">
 </head>
 <body style="height: 100%; overflow: hidden;">
@@ -129,6 +132,10 @@
 												<div class="setting-item-description"></div>
 											</div>
 											<div class="usage-chart-controls">
+												<select id="usage-metric-select" class="dropdown">
+													<option value="saved" selected data-i18n="saved">Saved</option>
+													<option value="read" data-i18n="read">Read</option>
+												</select>
 												<select id="usage-period-select" class="dropdown">
 													<option value="30d" data-i18n="last30Days">Last 30 days</option>
 													<option value="all" data-i18n="allTime">All time</option>
@@ -374,6 +381,18 @@
 										</div>
 										<div class="setting-item-control">
 											<button type="button" id="export-highlights" data-i18n="export">Export</button>
+										</div>
+									</div>
+
+									<div class="setting-item mod-horizontal">
+										<div class="setting-item-info">
+											<label for="import-highlights" data-i18n="importHighlights">Import highlights</label>
+											<div class="setting-item-description" data-i18n="importHighlightsDescription">
+												Import highlights from a file. Existing highlights are kept.
+											</div>
+										</div>
+										<div class="setting-item-control">
+											<button type="button" id="import-highlights" data-i18n="import">Import</button>
 										</div>
 									</div>
 								</div>

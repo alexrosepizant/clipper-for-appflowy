@@ -381,6 +381,14 @@
 	"highlights": {
 		"message": "하이라이트"
 	},
+	"highlightsImportSuccess": {
+		"message": "하이라이트 $1개를 가져왔습니다.",
+		"placeholders": {
+			"1": {
+				"content": "$1"
+			}
+		}
+	},
 	"highlightsNotFound": {
 		"message": "문서에서 하이라이트를 찾을 수 없습니다"
 	},
@@ -401,6 +409,12 @@
 	},
 	"importFailed": {
 		"message": "가져오기 실패했습니다. 자세한 내용은 콘솔을 확인해 주세요."
+	},
+	"importHighlights": {
+		"message": "하이라이트 가져오기"
+	},
+	"importHighlightsDescription": {
+		"message": "파일에서 하이라이트를 가져옵니다. 기존 하이라이트는 유지됩니다."
 	},
 	"importModalTitle": {
 		"message": "수입"
@@ -588,6 +602,12 @@
 	"pageVariables": {
 		"message": "페이지 변수"
 	},
+	"pagesRead": {
+		"message": "페이지 읽음"
+	},
+	"pagesReadPlural": {
+		"message": "페이지들을 읽음"
+	},
 	"pagesSaved": {
 		"message": "페이지 저장됨"
 	},
@@ -695,6 +715,9 @@
 	},
 	"rateExtensionDescription": {
 		"message": "웹 클리퍼를 즐기고 계신가요? 평가를 통해 우리를 도와주세요."
+	},
+	"read": {
+		"message": "읽음"
 	},
 	"reader": {
 		"message": "리더"
@@ -896,6 +919,9 @@
 	},
 	"saveBehaviorLabel": {
 		"message": "저장 동작"
+	},
+	"saved": {
+		"message": "저장됨"
 	},
 	"saveFile": {
 		"message": "파일 저장..."

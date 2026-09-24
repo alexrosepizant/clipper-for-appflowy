@@ -45,7 +45,7 @@ import {
 	collectPromptVariables,
 } from "../utils/interpreter";
 import { adjustNoteNameHeight } from "../utils/ui-utils";
-import { debugLog } from "../utils/debug";
+import { debugLog, isDebugMode } from "../utils/debug";
 import {
 	showVariables,
 	initializeVariablesPanel,
@@ -1338,17 +1338,19 @@ async function fillTemplateFieldValues(
 		}
 	}
 
-	const replacedTemplate = await getReplacedTemplate(
-		template,
-		variables,
-		currentTabId!,
-		currentUrl
-	);
-	debugLog(
-		"Variables",
-		"Current template with replaced variables:",
-		JSON.stringify(replacedTemplate, null, 2)
-	);
+	if (isDebugMode()) {
+		const replacedTemplate = await getReplacedTemplate(
+			template,
+			variables,
+			currentTabId!,
+			currentUrl
+		);
+		debugLog(
+			"Variables",
+			"Current template with replaced variables:",
+			JSON.stringify(replacedTemplate, null, 2)
+		);
+	}
 }
 
 function setupMetadataToggle() {

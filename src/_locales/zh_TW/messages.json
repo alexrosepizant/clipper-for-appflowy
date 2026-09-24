@@ -381,6 +381,14 @@
 	"highlights": {
 		"message": "螢光標記"
 	},
+	"highlightsImportSuccess": {
+		"message": "已匯入 $1 則螢光標記。",
+		"placeholders": {
+			"1": {
+				"content": "$1"
+			}
+		}
+	},
 	"highlightsNotFound": {
 		"message": "文章中找不到螢光標記"
 	},
@@ -401,6 +409,12 @@
 	},
 	"importFailed": {
 		"message": "匯入失敗。請檢查控制台以獲得更多詳細資訊。"
+	},
+	"importHighlights": {
+		"message": "匯入螢光標記"
+	},
+	"importHighlightsDescription": {
+		"message": "從檔案匯入螢光標記。現有的螢光標記會保留。"
 	},
 	"importModalTitle": {
 		"message": "匯入"
@@ -588,6 +602,12 @@
 	"pageVariables": {
 		"message": "頁面變數"
 	},
+	"pagesRead": {
+		"message": "已閱讀頁面"
+	},
+	"pagesReadPlural": {
+		"message": "已閱讀的頁面"
+	},
 	"pagesSaved": {
 		"message": "已保存頁面"
 	},
@@ -695,6 +715,9 @@
 	},
 	"rateExtensionDescription": {
 		"message": "您喜歡Web Clipper嗎？請幫助我們給它評分。"
+	},
+	"read": {
+		"message": "已閱讀"
 	},
 	"reader": {
 		"message": "閱讀器"
@@ -896,6 +919,9 @@
 	},
 	"saveBehaviorLabel": {
 		"message": "保存行為"
+	},
+	"saved": {
+		"message": "已保存"
 	},
 	"saveFile": {
 		"message": "儲存檔案..."

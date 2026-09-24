@@ -381,6 +381,14 @@
 	"highlights": {
 		"message": "ការរំលេច"
 	},
+	"highlightsImportSuccess": {
+		"message": "បាននាំចូលការរំលេច $1។",
+		"placeholders": {
+			"1": {
+				"content": "$1"
+			}
+		}
+	},
 	"highlightsNotFound": {
 		"message": "រកមិនឃើញការរំលេចនៅក្នុងអត្ថបទ"
 	},
@@ -401,6 +409,12 @@
 	},
 	"importFailed": {
 		"message": "ការនាំចូលបានបរាជ័យ។ សូមពិនិត្យ console សម្រាប់ព័ត៌មានលម្អិតបន្ថែម។"
+	},
+	"importHighlights": {
+		"message": "នាំចូលការរំលេច"
+	},
+	"importHighlightsDescription": {
+		"message": "នាំចូលការរំលេចពីឯកសារ។ ការរំលេចដែលមានស្រាប់នឹងត្រូវរក្សាទុក។"
 	},
 	"importModalTitle": {
 		"message": "នាំចូល"
@@ -588,6 +602,12 @@
 	"pageVariables": {
 		"message": "អថេរទំព័រ"
 	},
+	"pagesRead": {
+		"message": "បានអានទំព័រ"
+	},
+	"pagesReadPlural": {
+		"message": "បានអានទំព័រ"
+	},
 	"pagesSaved": {
 		"message": "បានរក្សាទុកទំព័រ"
 	},
@@ -695,6 +715,9 @@
 	},
 	"rateExtensionDescription": {
 		"message": "តើអ្នកកំពុងរីករាយជាមួយ Web Clipper មែនទេ? ជួយយើងដោយផ្តល់ការវាយតម្លៃ។"
+	},
+	"read": {
+		"message": "បានអាន"
 	},
 	"reader": {
 		"message": "របៀបអាន"
@@ -896,6 +919,9 @@
 	},
 	"saveBehaviorLabel": {
 		"message": "ឥរិយាបថការរក្សាទុក"
+	},
+	"saved": {
+		"message": "បានរក្សាទុក"
 	},
 	"saveFile": {
 		"message": "រក្សាទុកឯកសារ..."

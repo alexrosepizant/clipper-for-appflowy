@@ -381,6 +381,14 @@
 	"highlights": {
 		"message": "Markeringen"
 	},
+	"highlightsImportSuccess": {
+		"message": "$1 highlights geïmporteerd.",
+		"placeholders": {
+			"1": {
+				"content": "$1"
+			}
+		}
+	},
 	"highlightsNotFound": {
 		"message": "Geen markeringen gevonden in artikel"
 	},
@@ -401,6 +409,12 @@
 	},
 	"importFailed": {
 		"message": "Importeren mislukt. Controleer de console voor meer details."
+	},
+	"importHighlights": {
+		"message": "Highlights importeren"
+	},
+	"importHighlightsDescription": {
+		"message": "Importeer highlights uit een bestand. Bestaande highlights blijven behouden."
 	},
 	"importModalTitle": {
 		"message": "Importeren"
@@ -588,6 +602,12 @@
 	"pageVariables": {
 		"message": "Paginavariabelen"
 	},
+	"pagesRead": {
+		"message": "pagina gelezen"
+	},
+	"pagesReadPlural": {
+		"message": "pagina's gelezen"
+	},
 	"pagesSaved": {
 		"message": "pagina opgeslagen"
 	},
@@ -695,6 +715,9 @@
 	},
 	"rateExtensionDescription": {
 		"message": "Geniet u van Web Clipper? Help ons door het een beoordeling te geven."
+	},
+	"read": {
+		"message": "Gelezen"
 	},
 	"reader": {
 		"message": "Lezer"
@@ -896,6 +919,9 @@
 	},
 	"saveBehaviorLabel": {
 		"message": "Opslaggedrag"
+	},
+	"saved": {
+		"message": "Opgeslagen"
 	},
 	"saveFile": {
 		"message": "Bestand opslaan..."
